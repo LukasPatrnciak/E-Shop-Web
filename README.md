@@ -1,0 +1,1 @@
+Description of the functions is there: https://app.swaggerhub.com/apis-docs/sk-stuba-fei-uim-oop/OOP_Zadanie_3/1.0.0
