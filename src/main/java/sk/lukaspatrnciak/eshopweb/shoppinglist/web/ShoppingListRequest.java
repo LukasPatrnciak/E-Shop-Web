@@ -1,17 +1,17 @@
-package sk.lukaspatrnciak.eshopweb.itemcart.web;
+package sk.lukaspatrnciak.eshopweb.shoppinglist.web;
 
-import sk.lukaspatrnciak.eshopweb.itemcart.data.ItemCart;
+import sk.lukaspatrnciak.eshopweb.shoppinglist.data.ShoppingList;
 
-public class ItemCartAddRequest {
+public class ShoppingListRequest {
     private Long productId;
     private Long amount;
 
-    public ItemCartAddRequest() {
+    public ShoppingListRequest(ShoppingList shoppingList) {
+        this.productId = shoppingList.getProduct().getId();
+        this.amount = shoppingList.getAmount();
     }
 
-    public ItemCartAddRequest(ItemCart itemCart) {
-        this.productId = itemCart.getProduct().getId();
-        this.amount = itemCart.getAmount();
+    public ShoppingListRequest() {
     }
 
     public Long getProductId() {

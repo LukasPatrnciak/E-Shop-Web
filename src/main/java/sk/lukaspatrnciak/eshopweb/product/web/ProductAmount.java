@@ -1,4 +1,4 @@
-package sk.lukaspatrnciak.eshopweb.product.data;
+package sk.lukaspatrnciak.eshopweb.product.web;
 
 public class ProductAmount {
     private Long amount;

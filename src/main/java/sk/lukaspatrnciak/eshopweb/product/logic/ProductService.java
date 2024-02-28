@@ -1,5 +1,7 @@
 package sk.lukaspatrnciak.eshopweb.product.logic;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import sk.lukaspatrnciak.eshopweb.shoppinglist.data.ShoppingList;
 import sk.lukaspatrnciak.eshopweb.product.data.ProductRepositoryInterface;
 import sk.lukaspatrnciak.eshopweb.exeption.NotFoundException;
 import sk.lukaspatrnciak.eshopweb.exeption.*;
@@ -13,13 +15,14 @@ import java.util.List;
 @Service
 public class ProductService implements ProductServiceInterface {
 
-    private final ProductRepositoryInterface repository;
+    @Autowired
+    private ProductRepositoryInterface repository;
 
     public ProductService(ProductRepositoryInterface repository) {
         this.repository = repository;
-
     }
 
+    @Override
     public List<Product> getAll(){
         return this.repository.findAll();
     }
@@ -79,16 +82,57 @@ public class ProductService implements ProductServiceInterface {
         Product b = this.getById(id);
         b.setAmount(b.getAmount() + increment);
         this.repository.save(b);
+
         return b.getAmount();
     }
+
     @Override
     public void removeAmount(Long id, Long decrement) throws NotFoundException, IllegalOperationException {
         Product p = this.getById(id);
+
         if (p.getAmount() < decrement) {
             throw new IllegalOperationException();
         }
+
         p.setAmount(p.getAmount() - decrement);
+
         this.repository.save(p);
     }
 
+    @Override
+    public boolean isSufficientAmount(Long id, Long decrementAmount) throws NotFoundException {
+        Product product = returnExistingPrduct(id);
+
+        if (product.getAmount() - decrementAmount < 0) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    @Override
+    public ShoppingList isProductInList(Long id, List<ShoppingList> shoppingList) throws NotFoundException {
+        Product product = getById(id);
+        ShoppingList itemCart = null;
+
+        for (ShoppingList shoppingListIterator : shoppingList) {
+            assert false;
+
+            if (product.equals(itemCart.getProduct())) {
+                itemCart = shoppingListIterator;
+            }
+        }
+        return itemCart;
+    }
+
+    @Override
+    public Product returnExistingPrduct(Long id) throws NotFoundException {
+        Product product = getById(id);
+
+        if (product != null) {
+            return product;
+        } else {
+            throw new NotFoundException();
+        }
+    }
 }
